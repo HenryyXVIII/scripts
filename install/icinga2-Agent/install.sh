@@ -12,7 +12,7 @@ test $? -eq 0 || {
 LOGFILE="/var/log/icinga-install.log"
 
 log() {
-    echo "[$(date '+%F %T')] $*" | tee -a "$LOGFILE"
+    echo "[$(date '+%F %T')] $*" >> tee -a "$LOGFILE"
 }
 #VARS
 
@@ -53,31 +53,36 @@ then
 
     #Basisprogramme
     apt update && apt -y install apt-transport-https wget
-
+    log "Paketlisten Aktualisieren"
+    log "Abhängikeiten installieren"
     #key
     wget -O ./icinga-archive-keyring.deb "https://packages.icinga.com/icinga-archive-keyring_latest+debian$VERSION_ID.deb"
-
+    log "icinga2 key downloaden"
     #installation key
     apt -y install ./icinga-archive-keyring.deb
-
+    log "installation key"
+    
     #Icinga in die apt sourecliste
     echo "deb [signed-by=/usr/share/keyrings/icinga-archive-keyring.gpg] https://packages.icinga.com/debian icinga-${DIST} main" > \
     /etc/apt/sources.list.d/${DIST}-icinga.list
 
     echo "deb-src [signed-by=/usr/share/keyrings/icinga-archive-keyring.gpg] https://packages.icinga.com/debian icinga-${DIST} main" >> \
     /etc/apt/sources.list.d/${DIST}-icinga.list
+    log "schreiben der source list"
     
     #installation Icinga
     echo "installation Icinga"
     apt update && apt -y install icinga2 monitoring-plugins
+    log "installation icinga2 und monitoring plugins"
 
     #verifizierung
     icinga2 daemon -C
-
+    
     #echo "installation Plugins"
     #apt -y install monitoring-plugins
 
     rm ./icinga-archive-keyring.deb
+    log "löschen des keys"
 
     echo "Installation fertig, bitte starte den Nodewizard 'icinga2 node Wizard' oder konfiguriere selbst unter /etc/icinga2/" 
 

@@ -5,14 +5,14 @@
 set -Eeuo pipefail
 sudo -n true
 test $? -eq 0 || {
-    exit 1
     echo "you should have sudo privilege to run this script"
+    exit 1
     }
     
 LOGFILE="/var/log/icinga-install.log"
 
 log() {
-    echo "[$(date '+%F %T')] $*" >> tee -a "$LOGFILE"
+    echo "[$(date '+%F %T')] $*" >> "$LOGFILE"
 }
 #VARS
 

@@ -3,9 +3,10 @@
 # Ersteller: Henry
 #
 # Prüft Nexcloud Version durch Commando um Abhängikeiten (wie Apps) zu berücksichtiegen
-# Installieren
+#
+# installation:
 # 
-# check in Verzeichnis packen und ausführungs Berechtigungen setzen
+# check in Verzeichnis packen und ausführungs Berechtigungen setzen (Nextcloud Hostm it Icinga Agent)
 # 
 # 
 # =>chmod +x check_ncvshell.sh

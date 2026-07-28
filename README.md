@@ -14,6 +14,6 @@ Platforms:
 - Podman
 - Icinga2/Nagios
 
-Make it till you brake it and always take advice 
+Make it till you brake it and take advice 
 
 : 3

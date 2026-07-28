@@ -10,6 +10,11 @@ test $? -eq 0 || {
     }
     
 LOGFILE="/var/log/icinga-install.log"
+HOSTFQDN=$(Hosname -f)
+ICINGAENPOINT=
+ENDPOINTIP=
+CLUSTERZONE=
+#ICINGAPORT=5665
 
 log() {
     echo "[$(date '+%F %T')] $*" >> "$LOGFILE"
@@ -84,7 +89,7 @@ then
     rm ./icinga-archive-keyring.deb
     log "löschen des keys"
 
-    echo "Installation fertig, bitte starte den Nodewizard 'icinga2 node Wizard' oder konfiguriere selbst unter /etc/icinga2/" 
+    
 
 
 
@@ -187,7 +192,30 @@ else
     log "fehler"
 
 fi
-echo script ist fertig
+
+echo "Installation fertig, bitte starte den Nodewizard 'icinga2 node Wizard' oder konfiguriere selbst unter /etc/icinga2/" 
 log "erfolgreich"
 
+read -p "Do you want configure? (Y/n) " RETURN
+
+while true
+do
+    case "$RETURN" in
+        [Yy][Jj]|[Yy]|[Jj]|"")
+            echo "konfiguartion"
+            log "start konfiguration"
+            # hier dein Befehl
+            break
+            ;;
+        [Nn])
+            echo "keine weiteren konfigurationen nötig"
+            log "keine konfiguration"
+            break
+            ;;
+        *)
+            echo "Ungültige Eingabe."
+            log "eingabe ungültig"
+            ;;
+    esac
+done
 exit

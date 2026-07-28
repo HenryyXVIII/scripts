@@ -8,18 +8,19 @@ test $? -eq 0 || {
     echo "you should have sudo privilege to run this script"
     exit 1
     }
-    
+
+#VARS
 LOGFILE="/var/log/icinga-install.log"
 HOSTFQDN=$(Hosname -f)
 ICINGAENPOINT=
 ENDPOINTIP=
 CLUSTERZONE=
-#ICINGAPORT=5665
+ICINGAPORT=5665
 
 log() {
     echo "[$(date '+%F %T')] $*" >> "$LOGFILE"
 }
-#VARS
+
 
 
 
@@ -196,15 +197,44 @@ fi
 echo "Installation fertig, bitte starte den Nodewizard 'icinga2 node Wizard' oder konfiguriere selbst unter /etc/icinga2/" 
 log "erfolgreich"
 
-read -p "Do you want configure? (Y/n) " RETURN
+
 
 while true
 do
+    read -p "Do you want configure? (Y/n) " RETURN
     case "$RETURN" in
         [Yy][Jj]|[Yy]|[Jj]|"")
             echo "konfiguartion"
             log "start konfiguration"
-            # hier dein Befehl
+            : '
+            # Start NodeWizard #
+            icinga2 node Wizard
+            echo "n\$HOSTFQDN\$ENDPOINTIP\$ICINGAENPOINT\Y"
+            '
+            
+            : '           
+            icinga2 node setup \
+                --ticket "$TICKET" \
+                --endpoint $ICINGAENPOINT,$ENDPOINTIP,$ICINGAPORT \
+                --zone satellite-zone \
+                --parent_zone $CLUSTERZONE \
+                --parent_host $ENDPOINTIP \
+                --trustedcert /etc/icinga2/pki/trusted-parent.crt \
+                --cn "$HOSTFQDN" \
+                --accept-config \
+                --accept-commands
+             '
+            icinga2 node setup
+              --cn "{{ icinga_cn }}"
+              --endpoint "{{ icinga_master_host_cn }},{{ icinga_master_host }},{{ icinga_master_port }}" 
+              --zone "{{ icinga_zone }}"
+              --parent_zone "{{ icinga_parent_zone }}"
+              --parent_host "{{ icinga_parent_endpoints.0.host }}"
+              --trustedcert "{{ icinga_certs_path }}/{{ icinga_master_host_cn }}.crt"
+              --accept-commands
+              --accept-config
+              --disable-confd
+            
             break
             ;;
         [Nn])

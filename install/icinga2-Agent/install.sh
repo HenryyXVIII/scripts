@@ -17,7 +17,9 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 #VARS
-LOGFILE="/var/log/icinga2-install-$date.log"
+DATE=$(date '+%F_%H-%M-%S')
+LOGFILE="/var/log/icinga2-install-${DATE}.log"
+
 
 
 log() {

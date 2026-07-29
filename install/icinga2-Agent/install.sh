@@ -3,11 +3,18 @@
 ## Autor 
 
 set -Eeuo pipefail
-sudo -n true
-test $? -eq 0 || {
-    echo "you should have sudo privilege to run this script"
-    exit 1
-    }
+
+# sudo? #
+#sudo -n true
+#test $? -eq 0 || {
+#    echo "you should have sudo privilege to run this script"
+#    exit 1
+#    }
+
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 
+   exit 1
+fi
 
 #VARS
 LOGFILE="/var/log/icinga-install.log"

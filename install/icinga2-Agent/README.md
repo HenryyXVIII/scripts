@@ -16,7 +16,7 @@ testet on:
 
 apt install -y curl wget
 
-wget -O - https://github.com/HenryyXVIII/scripts/raw/refs/heads/main/install/icinga2-Agent/install.sh | bash
+curl -fsSL https://github.com/HenryyXVIII/scripts/raw/refs/heads/main/install/icinga2-Agent/install.sh | sudo bash
 ```
 
 ## Install on Alpine

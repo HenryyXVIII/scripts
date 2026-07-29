@@ -107,12 +107,15 @@ elif [ "$ID" = "ubuntu" ]
 then
 
     echo "$ID"
+    log "Paketlisten Aktualisieren"
+    log "Abhängikeiten installieren"
     apt update && apt -y install apt-transport-https wget
 
     wget -O icinga-archive-keyring.deb "https://packages.icinga.com/icinga-archive-keyring_latest+ubuntu$VERSION_ID.deb"
+    log "icinga2 key downloaden"
 
     apt -y install ./icinga-archive-keyring.deb
-
+    log "installation key"
 
     . /etc/os-release
     if [ ! -z ${UBUNTU_CODENAME+x} ]
@@ -126,8 +129,10 @@ then
  
     echo "deb-src [signed-by=/usr/share/keyrings/icinga-archive-keyring.gpg] https://packages.icinga.com/ubuntu icinga-${DIST} main" >> \
     /etc/apt/sources.list.d/${DIST}-icinga.list
+    log "add sourcelist"
 
     apt install icinga2 monitoring-plugins
+    log "install icinga and monitoring Plugins"
 
     icinga2 daemon -C
 
@@ -220,7 +225,7 @@ do
 
             AGENTCN=$(hostname -f 2>/dev/null || cat /etc/hostname 2>/dev/null || hostname)
             PARENTCN=satelite.locales.lab
-            PARENTIP="187.67.69.42"
+            PARENTIP="192.168.69.42"
             PARENTPORT="5665"
             PARENTZONE="Entenhausen"
 

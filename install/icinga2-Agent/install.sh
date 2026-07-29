@@ -246,7 +246,7 @@ do
               --parent_host "$PARENTCN" \
               --accept-commands \
               --accept-config \
-              --disable-confd \
+              --disable-confd 
             
             break
             ;;

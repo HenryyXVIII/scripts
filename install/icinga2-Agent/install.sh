@@ -17,7 +17,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 #VARS
-LOGFILE="/var/log/icinga-install.log"
+LOGFILE="/var/log/icinga2-install-$date.log"
 
 
 log() {
@@ -177,15 +177,18 @@ elif [ "$ID" = "alpine" ]
 # Alpine #
 then
 
+   log "install for $ID"
     #Pakete
-    echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
-    echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-
-    apk update
-
-    #Installation
-    apk add icinga2 monitoring-plugins icinga2-vim
-
+   echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
+   echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+   log "update repositories"
+   
+   apk update
+   log "update apk"
+   
+   #Installation
+   apk add icinga2 monitoring-plugins icinga2-vim
+   log "add packages"
 
 # FEHLER #
 

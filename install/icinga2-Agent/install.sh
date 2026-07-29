@@ -207,15 +207,18 @@ do
     read -p "Do you want configure Agent (expermimental)? (Y/n) " RETURN
     case "$RETURN" in
         [Yy][Jj]|[Yy]|[Jj]|"")
+        
+            #konfiguration
             echo "konfiguartion"
             log "start konfiguration"
 
-            HOSTFQDN=$(Hosname -f)
-            ICINGAENPOINT=
-            ENDPOINTIP=
-            CLUSTERZONE=
-            ICINGAPORT=5665
+            AGENTCN=$(hostname -f 2>/dev/null || cat /etc/hostname 2>/dev/null || hostname)
+            PARENTCN=satelite.locales.lab
+            PARENTIP="187.67.69.42"
+            PARENTPORT="5665"
+            PARENTZONE="Entenhausen"
 
+            #test mit Nodewizard (schmutzig)
             : '
             # Start NodeWizard #
             icinga2 node Wizard
@@ -233,26 +236,28 @@ do
                 --cn "$HOSTFQDN" \
                 --accept-config \
                 --accept-commands
-             '
+            '
+            
             icinga2 node setup
-              --cn "{{ icinga_cn }}"
-              --endpoint "{{ icinga_master_host_cn }},{{ icinga_master_host }},{{ icinga_master_port }}" 
-              --zone "{{ icinga_zone }}"
-              --parent_zone "{{ icinga_parent_zone }}"
-              --parent_host "{{ icinga_parent_endpoints.0.host }}"
-              --trustedcert "{{ icinga_certs_path }}/{{ icinga_master_host_cn }}.crt"
-              --accept-commands
-              --accept-config
-              --disable-confd
+              --cn "$AGENTCN" \
+              --endpoint "$PARENTCN","$PARENTIP","$PARENTPORT" \
+              --zone "$AGENTCN" \
+              --parent_zone "$PARENTZONE" \
+              --parent_host "$PARENTCN" \
+              --accept-commands \
+              --accept-config \
+              --disable-confd \
             
             break
             ;;
         [Nn])
+            #keine konfig
             echo "keine weiteren konfigurationen nötig"
             log "keine konfiguration"
             break
             ;;
         *)
+            #falsche eingabe
             echo "Ungültige Eingabe."
             log "eingabe ungültig"
             ;;

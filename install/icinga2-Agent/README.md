@@ -17,7 +17,9 @@ testet on:
 apt install -y curl wget
 
 wget -O - https://github.com/HenryyXVIII/scripts/raw/refs/heads/main/install/icinga2-Agent/install.sh | bash
+```
 
+```bash
 # ALPINE
 apk update && apk add curl wget bash
 

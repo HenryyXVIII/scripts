@@ -11,13 +11,15 @@ testet on:
 - alpine v3.23
 
 # How to run?
-
+## Install on debian/ubuntu
 ```bash
-# DEBAIN/UBUNTU
+
 apt install -y curl wget
 
 wget -O - https://github.com/HenryyXVIII/scripts/raw/refs/heads/main/install/icinga2-Agent/install.sh | bash
 ```
+
+## Install on Alpine
 
 ```bash
 # ALPINE

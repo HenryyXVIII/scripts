@@ -184,7 +184,7 @@ then
     apk update
 
     #Installation
-    apk add -y icinga2 monitoring-plugins icinga2-vim
+    apk add icinga2 monitoring-plugins icinga2-vim
 
 
 # FEHLER #

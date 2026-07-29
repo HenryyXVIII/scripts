@@ -11,11 +11,7 @@ test $? -eq 0 || {
 
 #VARS
 LOGFILE="/var/log/icinga-install.log"
-HOSTFQDN=$(Hosname -f)
-ICINGAENPOINT=
-ENDPOINTIP=
-CLUSTERZONE=
-ICINGAPORT=5665
+
 
 log() {
     echo "[$(date '+%F %T')] $*" >> "$LOGFILE"
@@ -201,11 +197,18 @@ log "erfolgreich"
 
 while true
 do
-    read -p "Do you want configure? (Y/n) " RETURN
+    read -p "Do you want configure Agent (expermimental)? (Y/n) " RETURN
     case "$RETURN" in
         [Yy][Jj]|[Yy]|[Jj]|"")
             echo "konfiguartion"
             log "start konfiguration"
+
+            HOSTFQDN=$(Hosname -f)
+            ICINGAENPOINT=
+            ENDPOINTIP=
+            CLUSTERZONE=
+            ICINGAPORT=5665
+
             : '
             # Start NodeWizard #
             icinga2 node Wizard

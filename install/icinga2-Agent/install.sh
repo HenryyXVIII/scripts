@@ -135,6 +135,8 @@ then
     log "install icinga and monitoring Plugins"
 
     icinga2 daemon -C
+    rm ./icinga-archive-keyring.deb
+    log "löschen des keys"
 
 
 

@@ -235,11 +235,12 @@ do
 
             log "variablen"
             
-            echo "$AGENTCN"
-            echo "$PARENTCN"
-            echo "$PARENTIP"
-            echo "$PARENTPORT"
-            echo "$PARENTZONE"
+            echo "=> Host CN: $AGENTCN"
+            echo "=> Parent CN: $PARENTCN"
+            echo "=> Parent IP: $PARENTIP"
+            echo "=> Parent Port: $PARENTPORT"
+            echo "=> Cluster Zone: $PARENTZONE"
+            echo "=> Cert Path: $PKIPATH"
             
             #test mit Nodewizard (schmutzig)
             : '

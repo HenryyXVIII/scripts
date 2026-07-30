@@ -31,6 +31,6 @@ wget -O - https://github.com/HenryyXVIII/scripts/raw/refs/heads/main/install/ici
 
 ```
 
-#Adding Features:
+# Adding Features:
 
 automatic configuration (enpoint/parent)

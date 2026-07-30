@@ -210,14 +210,15 @@ else
 
 fi
 
-log "Installation fertig, bitte starte den Nodewizard 'icinga2 node Wizard' oder konfiguriere selbst unter /etc/icinga2/" 
+#log "Installation fertig, bitte starte den Nodewizard 'icinga2 node Wizard' oder konfiguriere selbst unter /etc/icinga2/" 
 log "erfolgreich"
+log "installation done, choose how to proceed"
 
 
 
 while true
 do
-    read -p "Do you want configure Agent (expermimental)? (Y/n) " RETURN < /dev/tty
+    read -p " - expermimental - Do you want configure Agent (Yes,Wizard,No)? (Y/w/n) " RETURN < /dev/tty
     case "$RETURN" in
         [Yy][Jj]|[Yy]|[Jj]|"")
         
@@ -263,6 +264,12 @@ do
             
             break
             ;;
+         [Ww])
+            #keine konfig
+            log "start nodewizard"
+            icinga2 node wizard
+            break
+            ;;    
         [Nn])
             #keine konfig
             log "keine weiteren konfigurationen nötig"

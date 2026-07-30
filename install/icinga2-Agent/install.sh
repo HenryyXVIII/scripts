@@ -256,15 +256,14 @@ do
               --host "$PARENTIP" \
               --port "$PARENTPORT"
             
-            # 2. Key und Certificate Signing Request (CSR) lokal generieren
+
             log "Generiere lokalen Key und CSR..."
             icinga2 pki new-cert \
               --cn "$AGENTCN" \
               --key "$PKIPATH/$AGENTCN.key" \
               --csr "$PKIPATH/$AGENTCN.csr"
             
-            # 3. Zertifikat beim Master anfordern (Ticket erforderlich für Auto-Sign)
-            # Falls du eine TICKET-Variable hast, nutze '--ticket "$TICKET"'
+
             log "Sende PKI-Request an Master..."
             icinga2 pki request \
               --host "$PARENTIP" \
@@ -275,8 +274,11 @@ do
               --csr "$PKIPATH/$AGENTCN.csr" \
               --ca "$PKIPATH/ca.crt"
               # Optional: --ticket "$TICKET"
+
+            log "Signiere certifikat auf dem Icinga Master!"
+            log "Tipp: icinga2 ca list"
             
-            # 4. Node Setup ausführen
+
             log "Starte Node Setup..."
             icinga2 node setup \
               --cn "$AGENTCN" \

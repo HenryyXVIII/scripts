@@ -14,7 +14,7 @@ testet on:
 ## Install on debian/ubuntu
 ```bash
 
-apt install -y curl wget
+sudo apt install -y curl wget
 
 curl -fsSL https://github.com/HenryyXVIII/scripts/raw/refs/heads/main/install/icinga2-Agent/install.sh | sudo bash
 ```

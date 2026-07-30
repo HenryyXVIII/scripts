@@ -296,6 +296,10 @@ do
               --global_zones "director-global"
             
             log "Node Setup erfolgreich abgeschlossen!"
+
+            icinga2 daemon -C
+            log "config validierung"
+            
 ###############
             : '
 
@@ -313,6 +317,7 @@ do
               --global_zones "global-templates" "director-global"
             log "erfolgreich"
             '
+            
             log "neustart icinga2.service"
             if [ "$ID" = "alpine" ]; then
                 log "Verwende OpenRC für $ID"
@@ -332,7 +337,7 @@ do
             break
             ;;
          [Ww])
-            #keine konfig
+            #nodewizard
             log "start nodewizard"
             icinga2 node wizard
             break

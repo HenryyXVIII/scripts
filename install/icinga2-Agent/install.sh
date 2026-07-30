@@ -223,8 +223,8 @@ do
         [Yy][Jj]|[Yy]|[Jj]|"")
         
             #konfiguration
-            log "konfiguartion"
-            log "start konfiguration"
+            log "konfiguration automatisch"
+            log "lese Variablen"
 
             AGENTCN=$(hostname -f 2>/dev/null || cat /etc/hostname 2>/dev/null || hostname)
             PARENTCN=satelite.locales.lab
@@ -232,6 +232,14 @@ do
             PARENTPORT="5665"
             PARENTZONE="Entenhausen"
 
+            log "variablen"
+            
+            echo "$AGENTCN"
+            echo "$PARENTCN"
+            echo "$PARENTIP"
+            echo "$PARENTPORT"
+            echo "$PARENTZONE"
+            
             #test mit Nodewizard (schmutzig)
             : '
             # Start NodeWizard #
@@ -251,6 +259,8 @@ do
                 --accept-config \
                 --accept-commands
             '
+
+            log "start node setup"
             
             icinga2 node setup \
               --cn "$AGENTCN" \
@@ -262,6 +272,7 @@ do
               --accept-config \
               --disable-confd \
               --global_zones "global-templates" "director-global"
+            log "erfolgreich"
             
             break
             ;;

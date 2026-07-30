@@ -17,7 +17,7 @@ testet on:
 
 sudo apt install -y curl wget
 
-curl -fsSL https://github.com/HenryyXVIII/scripts/blob/0783bffc560955f8383eaf569808e6e707717aef/install/icinga2-Agent/install.sh | sudo bash
+curl -fsSL https://github.com/HenryyXVIII/scripts/raw/refs/heads/main/install/icinga2-Agent/install.sh | sudo bash
 
 ```
 

@@ -252,7 +252,7 @@ do
                 --accept-commands
             '
             
-            icinga2 node setup
+            icinga2 node setup \
               --cn "$AGENTCN" \
               --endpoint "$PARENTCN","$PARENTIP","$PARENTPORT" \
               --zone "$AGENTCN" \

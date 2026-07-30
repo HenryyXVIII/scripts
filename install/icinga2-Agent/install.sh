@@ -231,6 +231,7 @@ do
             PARENTIP="192.168.69.42"
             PARENTPORT="5665"
             PARENTZONE="Entenhausen"
+            PKIPATH="/etc/icinga2/pki"
 
             log "variablen"
             
@@ -247,18 +248,53 @@ do
             echo "n\$HOSTFQDN\$ENDPOINTIP\$ICINGAENPOINT\Y"
             '
             
-            : '           
+###############
+            log "Hole Master-Zertifikat..."
+            icinga2 pki save-cert \
+              --trustedcert "$PKIPATH/trusted-parent.crt" \
+              --host "$PARENTIP" \
+              --port "$PARENTPORT"
+            
+            # 2. Key und Certificate Signing Request (CSR) lokal generieren
+            log "Generiere lokalen Key und CSR..."
+            icinga2 pki new-cert \
+              --cn "$AGENTCN" \
+              --key "$PKIPATH/$AGENTCN.key" \
+              --csr "$PKIPATH/$AGENTCN.csr"
+            
+            # 3. Zertifikat beim Master anfordern (Ticket erforderlich für Auto-Sign)
+            # Falls du eine TICKET-Variable hast, nutze '--ticket "$TICKET"'
+            log "Sende PKI-Request an Master..."
+            icinga2 pki request \
+              --host "$PARENTIP" \
+              --port "$PARENTPORT" \
+              --trustedcert "$PKIPATH/trusted-parent.crt" \
+              --clientcert "$PKIPATH/$AGENTCN.crt" \
+              --key "$PKIPATH/$AGENTCN.key" \
+              --csr "$PKIPATH/$AGENTCN.csr" \
+              --ca "$PKIPATH/ca.crt"
+              # Optional: --ticket "$TICKET"
+            
+            # 4. Node Setup ausführen
+            log "Starte Node Setup..."
             icinga2 node setup \
-                --ticket "$TICKET" \
-                --endpoint $ICINGAENPOINT,$ENDPOINTIP,$ICINGAPORT \
-                --zone satellite-zone \
-                --parent_zone $CLUSTERZONE \
-                --parent_host $ENDPOINTIP \
-                --trustedcert /etc/icinga2/pki/trusted-parent.crt \
-                --cn "$HOSTFQDN" \
-                --accept-config \
-                --accept-commands
-            '
+              --cn "$AGENTCN" \
+              --endpoint "$PARENTCN,$PARENTIP,$PARENTPORT" \
+              --zone "$AGENTCN" \
+              --parent_zone "$PARENTZONE" \
+              --parent_host "$PARENTCN" \
+              --trustedcert "$PKIPATH/trusted-parent.crt" \
+              --clientcert "$PKIPATH/$AGENTCN.crt" \
+              --key "$PKIPATH/$AGENTCN.key" \
+              --accept-commands \
+              --accept-config \
+              --disable-confd \
+              --global_zones "global-templates" \
+              --global_zones "director-global"
+            
+            log "Node Setup erfolgreich abgeschlossen!"
+###############
+            : '
 
             log "start node setup"
             
@@ -273,6 +309,7 @@ do
               --disable-confd \
               --global_zones "global-templates" "director-global"
             log "erfolgreich"
+            '
             
             break
             ;;

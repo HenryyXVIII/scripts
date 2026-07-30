@@ -9,6 +9,7 @@ Installs the Icinga2 agent and monitoring plugins
 testet on:
 - debian 13
 - alpine v3.23
+- ubuntu 22.04.4 LTS
 
 # How to run?
 ## Install on debian/ubuntu

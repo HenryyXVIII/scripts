@@ -313,6 +313,21 @@ do
               --global_zones "global-templates" "director-global"
             log "erfolgreich"
             '
+            log "neustart icinga2.service"
+            if [ "$ID" = "alpine" ]; then
+                log "Verwende OpenRC für $ID"
+                rc-update add icinga2 default
+                rc-service icinga2 restart
+            
+            elif [ "$ID" = "ubuntu" ] || [ "$ID" = "debian" ] || [ "$ID" = "fedora" ] || [ "$ID" = "rhel" ]; then
+                # Systemd (Ubuntu / Debian / Fedora / RHEL)
+                log "Verwende Systemd für $ID"
+                systemctl restart icinga2.service
+            else
+                log "service neustart fehlgeschlagen, OS unbekannt: $ID"
+                exit 1
+            fi
+            log "Host erfolgreich konfiguriert"
             
             break
             ;;
@@ -335,4 +350,6 @@ do
             ;;
     esac
 done
+
+log "installation abgeschlossen"
 exit

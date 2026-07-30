@@ -24,7 +24,7 @@ LOGFILE="/var/log/icinga2-install-${DATE}.log"
 
 
 log() {
-    echo "[$(date '+%F %T')] $*" >> "$LOGFILE"
+    echo "=> [$(date '+%F %T')] $*" | tee -a "$LOGFILE"
 }
 
 
@@ -34,8 +34,8 @@ log() {
 source /etc/os-release
 
 log "OS detektion"
-echo "detect $NAME"
-echo "Install for $ID"
+log "detect $NAME"
+log "Install for $ID"
 
 
 ##ALT
@@ -55,7 +55,7 @@ if [ "$ID" = "debian" ]
 
 then
 
-    echo "$ID"
+    log "$ID"
     if [ -n "${VERSION_CODENAME:-}" ]
     then
     DIST="$VERSION_CODENAME"
@@ -106,7 +106,7 @@ elif [ "$ID" = "ubuntu" ]
 
 then
 
-    echo "$ID"
+    log "$ID"
     log "Paketlisten Aktualisieren"
     log "Abhängikeiten installieren"
     apt update && apt -y install apt-transport-https wget
@@ -146,7 +146,7 @@ elif [ "$ID" = "rhel" ]
 
 then
 
-    echo "$ID"
+    log "$ID"
     dnf install -y curl wget
     wget https://packages.icinga.com/subscription/rhel/ICINGA-release.repo -O /etc/yum.repos.d/ICINGA-release.repo
 
@@ -172,7 +172,7 @@ elif [ "$ID" = "fedora" ]
 
 then
 
-    echo "$ID"
+    log "$ID"
     dnf install -y curl
     rpm --import https://packages.icinga.com/icinga.key
     curl -o /etc/yum.repos.d/ICINGA-release.repo https://packages.icinga.com/fedora/ICINGA-release.repo
@@ -203,14 +203,14 @@ then
 # FEHLER #
 
 else
-    echo "$ID"
+    log "$ID"
     exit 1
-    echo "fehlgeschlagen"
-    log "fehler"
+    log "fehlgeschlagen"
+    log "distro not found"
 
 fi
 
-echo "Installation fertig, bitte starte den Nodewizard 'icinga2 node Wizard' oder konfiguriere selbst unter /etc/icinga2/" 
+log "Installation fertig, bitte starte den Nodewizard 'icinga2 node Wizard' oder konfiguriere selbst unter /etc/icinga2/" 
 log "erfolgreich"
 
 
@@ -222,7 +222,7 @@ do
         [Yy][Jj]|[Yy]|[Jj]|"")
         
             #konfiguration
-            echo "konfiguartion"
+            log "konfiguartion"
             log "start konfiguration"
 
             AGENTCN=$(hostname -f 2>/dev/null || cat /etc/hostname 2>/dev/null || hostname)
@@ -265,13 +265,13 @@ do
             ;;
         [Nn])
             #keine konfig
-            echo "keine weiteren konfigurationen nötig"
-            log "keine konfiguration"
+            log "keine weiteren konfigurationen nötig"
+
             break
             ;;
         *)
             #falsche eingabe
-            echo "Ungültige Eingabe."
+          
             log "eingabe ungültig"
             ;;
     esac

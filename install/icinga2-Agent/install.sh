@@ -217,7 +217,7 @@ log "erfolgreich"
 
 while true
 do
-    read -p "Do you want configure Agent (expermimental)? (Y/n) " RETURN
+    read -p "Do you want configure Agent (expermimental)? (Y/n) " RETURN < /dev/tty
     case "$RETURN" in
         [Yy][Jj]|[Yy]|[Jj]|"")
         

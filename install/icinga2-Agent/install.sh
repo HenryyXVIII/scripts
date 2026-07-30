@@ -260,7 +260,8 @@ do
               --parent_host "$PARENTCN" \
               --accept-commands \
               --accept-config \
-              --disable-confd 
+              --disable-confd \
+              --global_zones "global-templates" "director-global"
             
             break
             ;;

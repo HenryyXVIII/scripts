@@ -20,7 +20,11 @@ sudo apt install -y curl wget
 curl -fsSL https://github.com/HenryyXVIII/scripts/raw/refs/heads/main/install/icinga2-Agent/install.sh | sudo bash
 
 # Specific Variables can be changed to auto confgure the host
-curl -fsSL https://github.com/HenryyXVIII/scripts/raw/refs/heads/main/install/icinga2-Agent/install.sh | sudo bash -s -- -h <Parent-IP> -p <Parent-Port> -z <masterzone> -l <Host-CN>
+curl -fsSL https://github.com/HenryyXVIII/scripts/raw/refs/heads/main/install/icinga2-Agent/install.sh | sudo bash -s -- \
+-h <Parent-IP> \
+-p <Parent-Port> \
+-z <masterzone> \
+-l <Host-CN>
 
 ```
 

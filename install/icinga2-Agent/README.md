@@ -28,6 +28,28 @@ curl -fsSL https://github.com/HenryyXVIII/scripts/raw/refs/heads/main/install/ic
 
 ```
 
+Exampel
+```
+curl -fsSL https://github.com/HenryyXVIII/scripts/raw/refs/heads/main/install/icinga2-Agent/install.sh | sudo bash -s -- \
+-h 10.192.5.3 \
+-p 1882 \
+-z masterzone3000 \
+-l toblerone
+
+#Output
+
+=> [2026-07-31 11:16:01] variablen
+=> Host CN: toblerone
+=> Parent CN: satelite.locales.lab
+=> Parent IP: 10.192.5.3
+=> Parent Port: 1882
+=> Cluster Zone: masterzone3000
+=> Cert Path: /etc/icinga2/pki
+=> [2026-07-31 11:16:01] Hole Master-Zertifikat...
+
+
+```
+
 ## Install on Alpine
 
 ```bash

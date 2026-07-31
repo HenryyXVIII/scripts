@@ -21,8 +21,9 @@ curl -fsSL https://github.com/HenryyXVIII/scripts/raw/refs/heads/main/install/ic
 
 # Specific Variables can be changed to auto confgure the host
 curl -fsSL https://github.com/HenryyXVIII/scripts/raw/refs/heads/main/install/icinga2-Agent/install.sh | sudo bash -s -- \
--h <Parent-IP> \
--p <Parent-Port> \
+-h, --parenthost <Parent-IP> \
+-p, --port <Parent-Port> \
+-pcn, --parentcn <Parent-CName> \
 -z <masterzone> \
 -l <Host-CN>
 

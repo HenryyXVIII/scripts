@@ -234,28 +234,29 @@ do
 
             log "lese Script Variablen"
             
-            for arg in "$@"; do
-              case $arg in
-            	-h|--parenthost)
-              	PARENTIP="$2"
-              	shift
-              	;;
-            	-p|--port)
-              	PARENTPORT="$2"
-              	shift
-              	;;
-               -z|--zone)
-              	PARENTZONE="$2"
-              	shift
-              	;;
-               -l|--localzone)
-              	AGENTCN="$2"
-              	shift
-              	;;
-            	*)
-              	echo "Unknown option: $arg"
-              	;;
-              esac
+            while [[ $# -gt 0 ]]; do
+                case "$1" in
+                    -h|--parenthost)
+                        PARENTIP="$2"
+                        shift 2
+                        ;;
+                    -p|--port)
+                        PARENTPORT="$2"
+                        shift 2
+                        ;;
+                    -z|--zone)
+                        PARENTZONE="$2"
+                        shift 2
+                        ;;
+                    -l|--localzone)
+                        AGENTCN="$2"
+                        shift 2
+                        ;;
+                    *)
+                        echo "Unknown option: $1"
+                        exit 1
+                        ;;
+                esac
             done
 
 

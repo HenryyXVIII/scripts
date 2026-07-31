@@ -3,6 +3,8 @@
 ## Autor 
 
 set -Eeuo pipefail
+#Abbruch Wenn Fehler
+
 
 # sudo? #
 #sudo -n true
@@ -10,6 +12,8 @@ set -Eeuo pipefail
 #    echo "you should have sudo privilege to run this script"
 #    exit 1
 #    }
+# Testet ob SUDO rechte
+
 
 # test if runn as root #
 if [[ $EUID -ne 0 ]]; then
@@ -17,19 +21,24 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-#VARS
+############
+# LOG-FILE #
+############
+
 DATE=$(date '+%F_%H-%M-%S')
 LOGFILE="/var/log/icinga2-install-${DATE}.log"
-
+#LogDatei Pfad und Name mit Zeitstempel
 
 
 log() {
     echo "=> [$(date '+%F %T')] $*" | tee -a "$LOGFILE"
 }
+#log Funktion
 
 
-
-
+###############
+# Auslesen OS #
+###############
 
 source /etc/os-release
 
@@ -47,6 +56,9 @@ log "Install for $ID"
 
 ##Distro Wahl
 
+################
+# Installation #
+################
 
 log "Distro Wahl"
 if [ "$ID" = "debian" ]
@@ -143,7 +155,6 @@ then
 elif [ "$ID" = "rhel" ]
 
 # RHEL #
-
 then
 
     log "$ID"

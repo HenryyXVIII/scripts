@@ -244,6 +244,10 @@ do
                         PARENTPORT="$2"
                         shift 2
                         ;;
+                    -pcn|--parentcn)
+                        PARENTCN="$2"
+                        shift 2
+                        ;;
                     -z|--zone)
                         PARENTZONE="$2"
                         shift 2

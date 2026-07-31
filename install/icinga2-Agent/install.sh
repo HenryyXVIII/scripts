@@ -224,14 +224,41 @@ do
         
             #konfiguration
             log "konfiguration automatisch"
-            log "lese Variablen"
-
+            log "lese System Variablen"
             AGENTCN=$(hostname -f 2>/dev/null || cat /etc/hostname 2>/dev/null || hostname)
             PARENTCN=satelite.locales.lab
             PARENTIP="192.168.69.42"
             PARENTPORT="5665"
             PARENTZONE="Entenhausen"
             PKIPATH="/etc/icinga2/pki"
+
+            log "lese Script Variablen"
+            
+            for arg in "$@"; do
+              case $arg in
+            	-h|--parenthost)
+              	PARENTIP="$2"
+              	shift
+              	;;
+            	-p|--port)
+              	PARENTPORT="$2"
+              	shift
+              	;;
+               -z|--zone)
+              	PARENTZONE="$2"
+              	shift
+              	;;
+               -l|--localzone)
+              	AGENTCN="$2"
+              	shift
+              	;;
+            	*)
+              	echo "Unknown option: $arg"
+              	;;
+              esac
+            done
+
+
 
             log "variablen"
             

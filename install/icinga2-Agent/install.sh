@@ -310,15 +310,15 @@ do
             log "Sende PKI-Request an Master..."
 
               
-            icinga2 pki request \
-              --host "$PARENTIP" \
-              --port "$PARENTPORT" \
-              --trustedcert "$PKIPATH/trusted-parent.crt" \
-              --cert "$PKIPATH/$AGENTCN.crt" \
-              --key "$PKIPATH/$AGENTCN.key" \
-              --ca "$PKIPATH/ca.crt" 
-   #          --csr "$PKIPATH/$AGENTCN.csr" \
-              # Optional: --ticket "$TICKET"
+#            icinga2 pki request \
+#              --host "$PARENTIP" \
+#              --port "$PARENTPORT" \
+#              --trustedcert "$PKIPATH/trusted-parent.crt" \
+#              --cert "$PKIPATH/$AGENTCN.crt" \
+#              --key "$PKIPATH/$AGENTCN.key" \
+#              --ca "$PKIPATH/ca.crt" 
+#              --csr "$PKIPATH/$AGENTCN.csr" \
+#              --ticket "$TICKET"
 
             log "Signiere certifikat auf dem Icinga Master!"
             log "Tipp: icinga2 ca list"

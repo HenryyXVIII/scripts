@@ -5,7 +5,6 @@
 set -Eeuxo pipefail
 #Abbruch Wenn Fehler
 
-
 # sudo? #
 #sudo -n true
 #test $? -eq 0 || {
@@ -13,7 +12,6 @@ set -Eeuxo pipefail
 #    exit 1
 #    }
 # Testet ob SUDO rechte
-
 
 # test if runn as root #
 if [[ $EUID -ne 0 ]]; then
@@ -45,13 +43,6 @@ source /etc/os-release
 log "OS detektion"
 log "detect $NAME"
 log "Install for $ID"
-
-
-##ALT
-#source /etc/os-release && distro=$NAME
-#DIST=$(echo "$VERSION" | awk -F"[()]" '{print $2}')
-#DIST=$(awk -F"[)(]+" '/VERSION=/ {print $2}' /etc/os-release)
-
 
 
 ##Distro Wahl
@@ -107,8 +98,6 @@ then
 
     rm ./icinga-archive-keyring.deb
     log "löschen des keys"
-
-    
 
 
 
@@ -173,10 +162,6 @@ then
     systemctl start icinga2
 
 
-
-
-
-
 elif [ "$ID" = "fedora" ]
 
 # FEDORA #
@@ -224,7 +209,6 @@ fi
 #log "Installation fertig, bitte starte den Nodewizard 'icinga2 node Wizard' oder konfiguriere selbst unter /etc/icinga2/" 
 log "erfolgreich"
 log "installation done, choose how to proceed"
-
 
 
 while true
@@ -275,7 +259,6 @@ do
             done
 
 
-
             log "variablen"
             
             echo "=> Host CN: $AGENTCN"
@@ -284,14 +267,7 @@ do
             echo "=> Parent Port: $PARENTPORT"
             echo "=> Cluster Zone: $PARENTZONE"
             echo "=> Cert Path: $PKIPATH"
-            
-            #test mit Nodewizard (schmutzig)
-            : '
-            # Start NodeWizard #
-            icinga2 node Wizard
-            echo "n\$HOSTFQDN\$ENDPOINTIP\$ICINGAENPOINT\Y"
-            '
-            
+
 ###############
             log "Hole Master-Zertifikat..."
             icinga2 pki save-cert \
@@ -336,32 +312,12 @@ do
               --accept-config \
               --disable-confd \
 
-
-
             
             log "Node Setup erfolgreich abgeschlossen!"
 
             icinga2 daemon -C
             log "config validierung"
-            
-###############
-            : '
-
-            log "start node setup"
-            
-            icinga2 node setup \
-              --cn "$AGENTCN" \
-              --endpoint "$PARENTCN","$PARENTIP","$PARENTPORT" \
-              --zone "$AGENTCN" \
-              --parent_zone "$PARENTZONE" \
-              --parent_host "$PARENTCN" \
-              --accept-commands \
-              --accept-config \
-              --disable-confd \
-              --global_zones "global-templates" "director-global"
-            log "erfolgreich"
-            '
-            
+       
             log "neustart icinga2.service"
             if [ "$ID" = "alpine" ]; then
                 log "Verwende OpenRC für $ID"
@@ -403,8 +359,11 @@ log "Host erfolgreich konfiguriert"
 log "Hosteintrag in Director:"
 log "Hostname $AGENTCN"
 log "Hostadresse $(Hostname -I | awk '{print $1}')"
-            
+log ""
+log "oder via Icingacli"
+log "icingacli director host create --name $AGENTCN --display_name $AGENTCN --address $(Hostname -I | awk '{print $1}') --imports linux_host"
+log "----" 
 log "installation abgeschlossen"
-
+log "----"
 
 exit

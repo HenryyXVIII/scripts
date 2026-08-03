@@ -377,6 +377,9 @@ do
                 exit 1
             fi
             log "Host erfolgreich konfiguriert"
+            log "Hosteintrag in Director:"
+            log "Hostname $AGENTCN"
+            log "Hostadresse $(Hostname -I | awk '{print $1}')"
             
             break
             ;;
@@ -401,4 +404,5 @@ do
 done
 
 log "installation abgeschlossen"
+
 exit

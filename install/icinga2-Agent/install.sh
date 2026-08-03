@@ -2,7 +2,7 @@
 
 ## Autor 
 
-set -Eeuxo pipefail
+set -Eeuo pipefail
 #Abbruch Wenn Fehler
 
 # sudo? #

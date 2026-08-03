@@ -332,13 +332,12 @@ do
               --parent_zone "$PARENTZONE" \
               --parent_host "$PARENTCN" \
               --trustedcert "$PKIPATH/trusted-parent.crt" \
-              --key "$PKIPATH/$AGENTCN.key" \
               --accept-commands \
               --accept-config \
               --disable-confd \
-              --global_zones "global-templates" \
-              --global_zones "director-global"
-#              --clientcert "$PKIPATH/$AGENTCN.crt" \
+
+
+
             
             log "Node Setup erfolgreich abgeschlossen!"
 

@@ -314,7 +314,7 @@ do
               --trustedcert "$PKIPATH/trusted-parent.crt" \
               --cert "$PKIPATH/$AGENTCN.crt" \
               --key "$PKIPATH/$AGENTCN.key" \
-              --csr "$PKIPATH/$AGENTCN.csr" \
+    #          --csr "$PKIPATH/$AGENTCN.csr" \
               --ca "$PKIPATH/ca.crt"
               # Optional: --ticket "$TICKET"
 

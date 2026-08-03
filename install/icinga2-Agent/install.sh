@@ -314,8 +314,8 @@ do
               --trustedcert "$PKIPATH/trusted-parent.crt" \
               --cert "$PKIPATH/$AGENTCN.crt" \
               --key "$PKIPATH/$AGENTCN.key" \
-    #          --csr "$PKIPATH/$AGENTCN.csr" \
-              --ca "$PKIPATH/ca.crt"
+              --ca "$PKIPATH/ca.crt" 
+   #          --csr "$PKIPATH/$AGENTCN.csr" \
               # Optional: --ticket "$TICKET"
 
             log "Signiere certifikat auf dem Icinga Master!"

@@ -2,7 +2,7 @@
 
 ## Autor 
 
-set -Eeuo pipefail
+set -Eeuxo pipefail
 #Abbruch Wenn Fehler
 
 
@@ -308,14 +308,6 @@ do
             
 
             log "Sende PKI-Request an Master..."
-            echo "icinga2 pki request \
-              --host "$PARENTIP" \
-              --port "$PARENTPORT" \
-              --trustedcert "$PKIPATH/trusted-parent.crt" \
-              --cert "$PKIPATH/$AGENTCN.crt" \
-              --key "$PKIPATH/$AGENTCN.key" \
-              --ca "$PKIPATH/ca.crt"\
-              ende"
 
               
             icinga2 pki request \

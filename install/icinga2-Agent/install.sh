@@ -312,7 +312,7 @@ do
               --host "$PARENTIP" \
               --port "$PARENTPORT" \
               --trustedcert "$PKIPATH/trusted-parent.crt" \
-              --clientcert "$PKIPATH/$AGENTCN.crt" \
+              --cert "$PKIPATH/$AGENTCN.crt" \
               --key "$PKIPATH/$AGENTCN.key" \
               --csr "$PKIPATH/$AGENTCN.csr" \
               --ca "$PKIPATH/ca.crt"

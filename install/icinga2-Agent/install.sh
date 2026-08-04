@@ -54,7 +54,6 @@ EOF
 RETURN=""
 DATE=$(date '+%F_%H-%M-%S')
 LOGFILE="/var/log/icinga2-install-${DATE}.log"
-#LogDatei Pfad und Name mit Zeitstempel
 AGENTCN=$(hostname -f 2>/dev/null || cat /etc/hostname 2>/dev/null || hostname)
 PARENTCN=satelite.locales.lab
 PARENTIP="192.168.69.42"
@@ -113,7 +112,6 @@ while [[ $# -gt 0 ]]; do
          esac
 done
 
-
 # sudo? #
 #sudo -n true
 #test $? -eq 0 || {
@@ -139,8 +137,6 @@ log "detect $NAME"
 log "Install for $ID"
 
 
-##Distro Wahl
-
 ################
 # Installation #
 ################
@@ -149,8 +145,7 @@ log "Distro Wahl"
 if [ "$ID" = "debian" ]; then
 
     log "$ID"
-    if [ -n "${VERSION_CODENAME:-}" ]
-    then
+    if [ -n "${VERSION_CODENAME:-}" ]; then
     DIST="$VERSION_CODENAME"
     else
     DIST=$(awk -F"[)(]+" '/VERSION=/ {print $2}' /etc/os-release)
@@ -205,9 +200,9 @@ elif [ "$ID" = "ubuntu" ]; then
     log "installation key"
 
     . /etc/os-release
-    if [ ! -z ${UBUNTU_CODENAME+x} ]
     
-    then DIST="${UBUNTU_CODENAME}"
+    if [ ! -z ${UBUNTU_CODENAME+x} ]; then 
+    DIST="${UBUNTU_CODENAME}"
     else DIST="$(lsb_release -c| awk '{print $2}')"
     fi
  

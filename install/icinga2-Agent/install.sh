@@ -14,8 +14,17 @@ LOGFILE="/var/log/icinga2-install-${DATE}.log"
 AGENTCN=$(hostname -f 2>/dev/null || cat /etc/hostname 2>/dev/null || hostname)
 PARENTCN=satelite.locales.lab
 PARENTIP="192.168.69.42"
+PARENTZONE=""
 PARENTPORT="5665"
 PKIPATH="/etc/icinga2/pki"
+
+if [ -n "$PARENTIP" ] && [ -z "$RETURN" ]; then
+   RETURN='y'
+fi
+
+if [ -n "$PARENTCN" ] && [ -z "$PARENTZONE" ]; then
+   PARENTZONE=$PARENTCN
+fi
 
 
 while [[ $# -gt 0 ]]; do
@@ -283,14 +292,6 @@ fi
 #log "Installation fertig, bitte starte den Nodewizard 'icinga2 node Wizard' oder konfiguriere selbst unter /etc/icinga2/" 
 log "erfolgreich"
 log "installation done, choose how to proceed"
-
-if [ -n "$PARENTIP" ] && [ -z "$RETURN" ]; then
-   RETURN='y'
-fi
-
-if [ -n "$PARENTCN" ] && [ -z "$PARENTZONE" ]; then
-   PARENTZONE=$PARENTCN
-fi
 
 while true
 do

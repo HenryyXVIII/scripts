@@ -70,7 +70,7 @@ while [[ $# -gt 0 ]]; do
          RETURN="$2"
          shift 2
          ;;
-       --help)
+       -h|--help)
          schow_help
          exit 0
          ;;
@@ -95,6 +95,9 @@ Optionen:
   -z, --zone ZONE         Parent-Zone (Zone des Parents)
   -l, --localzone NAME    Lokale Zone 
   -r, --return y|w|n      y=Autoconfig w=node Wizard n=nein
+
+  => IF PARENT-HOST IP (-H) IS SET AUTOCONFIGURE WILL BE STARTET AUTOMATIC <=
+  set -r to n to avoid it
 
   -h, --help              Diese Hilfe anzeigen
 
@@ -123,7 +126,6 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-
 ###############
 # Auslesen OS #
 ###############
@@ -142,11 +144,7 @@ log "Install for $ID"
 ################
 
 log "Distro Wahl"
-if [ "$ID" = "debian" ]
-
-# DEBIAN #
-
-then
+if [ "$ID" = "debian" ]; then
 
     log "$ID"
     if [ -n "${VERSION_CODENAME:-}" ]
@@ -191,11 +189,7 @@ then
 
 
 
-elif [ "$ID" = "ubuntu" ]
-
-# UBUNTU #
-
-then
+elif [ "$ID" = "ubuntu" ]; then
 
     log "$ID"
     log "Paketlisten Aktualisieren"
@@ -231,10 +225,7 @@ then
 
 
 
-elif [ "$ID" = "rhel" ]
-
-# RHEL #
-then
+elif [ "$ID" = "rhel" ]; then
 
     log "$ID"
     dnf install -y curl wget
@@ -252,11 +243,7 @@ then
     systemctl start icinga2
 
 
-elif [ "$ID" = "fedora" ]
-
-# FEDORA #
-
-then
+elif [ "$ID" = "fedora" ]; then
 
     log "$ID"
     dnf install -y curl
@@ -269,9 +256,7 @@ then
     icinga2 daemon -C
 
 
-elif [ "$ID" = "alpine" ]
-# Alpine #
-then
+elif [ "$ID" = "alpine" ]; then
 
    log "install for $ID"
     #Pakete
@@ -287,7 +272,6 @@ then
    log "add packages"
 
 # FEHLER #
-
 else
     log "$ID"
     exit 1
@@ -296,12 +280,16 @@ else
 
 fi
 
-#log "Installation fertig, bitte starte den Nodewizard 'icinga2 node Wizard' oder konfiguriere selbst unter /etc/icinga2/" 
+#################
+# CONFIGURATION #
+#################
+
 log "erfolgreich"
 log "installation done, choose how to proceed"
 
 while true
 do
+    #Ist Return bereits gesetzt?
     log "Vorausgabe: $RETURN"
     if [ -z "${RETURN:-}" ]; then
         log "Variable Return nicht gesetzt"
@@ -374,6 +362,7 @@ do
 
             #restart Service
             log "neustart icinga2.service"
+            
             #rc-service
             if [ "$ID" = "alpine" ]; then
                 log "Verwende OpenRC für $ID"
@@ -410,6 +399,10 @@ do
             ;;
     esac
 done
+
+########
+# DONE #
+########
 
 log "Host erfolgreich konfiguriert"
 log "Hosteintrag in Director:"

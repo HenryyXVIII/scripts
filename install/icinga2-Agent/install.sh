@@ -2,8 +2,73 @@
 
 ## Autor 
 
+
+
 set -Eeuo pipefail
 #Abbruch Wenn Fehler
+
+while [[ $# -gt 0 ]]; do
+   case "$1" in
+      -H|--parenthost)
+         PARENTIP="$2"
+         shift 2
+         ;;
+      -p|--port)
+         PARENTPORT="$2"
+         shift 2
+         ;;
+      -pcn|--parentcn)
+         PARENTCN="$2"
+         shift 2
+         ;;
+      -z|--zone)
+         PARENTZONE="$2"
+         shift 2
+         ;;
+      -l|--localzone)
+         AGENTCN="$2"
+         shift 2
+         ;;
+       -r|--return)
+         RETURN="$2"
+         shift 2
+         ;;
+       --help)
+         schow_help
+         exit 0
+         ;;
+       *)
+         echo "Unknown option: $1"
+         exit 1
+         ;;
+         esac
+done
+
+show_help() {
+cat <<EOF
+Verwendung:
+  $(basename "$0") [OPTIONEN]
+
+Optionen:
+  -H, --parenthost IP     IP-Adresse des Parent-Hosts (Satelit)
+  -p, --port PORT         Port des Parent-Hosts (Satelit)
+  -pcn, --parentcn NAME   DNS Name des Parent-Host (Satelit)
+  -z, --zone ZONE         Parent-Zone (Zone des Parents)
+  -l, --localzone NAME    Lokale Zone 
+  -r, --return y|w|n      y=Autoconfig w=node Wizard n=nein
+
+  -h, --help              Diese Hilfe anzeigen
+
+Beispiel:
+  $(basename "$0") \
+    -H 192.168.1.10 \
+    -p 5665 \
+    -pcn master \
+    -z dmz \
+    -l web01 \
+    -r y
+EOF
+}
 
 # sudo? #
 #sudo -n true
@@ -210,6 +275,13 @@ fi
 log "erfolgreich"
 log "installation done, choose how to proceed"
 
+if [ -n "$PARENTIP" ] && [ -z "$RETURN" ]; then
+   RETURN='y'
+fi
+
+if [ -n "$PARENTCN" ] && [ -z "$PARENTZONE" ]; then
+   PARENTZONE=$PARENTCN
+fi
 
 while true
 do
@@ -224,39 +296,11 @@ do
             PARENTCN=satelite.locales.lab
             PARENTIP="192.168.69.42"
             PARENTPORT="5665"
-            PARENTZONE="Entenhausen"
             PKIPATH="/etc/icinga2/pki"
 
             log "lese Script Variablen"
             
-            while [[ $# -gt 0 ]]; do
-                case "$1" in
-                    -h|--parenthost)
-                        PARENTIP="$2"
-                        shift 2
-                        ;;
-                    -p|--port)
-                        PARENTPORT="$2"
-                        shift 2
-                        ;;
-                    -pcn|--parentcn)
-                        PARENTCN="$2"
-                        shift 2
-                        ;;
-                    -z|--zone)
-                        PARENTZONE="$2"
-                        shift 2
-                        ;;
-                    -l|--localzone)
-                        AGENTCN="$2"
-                        shift 2
-                        ;;
-                    *)
-                        echo "Unknown option: $1"
-                        exit 1
-                        ;;
-                esac
-            done
+
 
 
             log "variablen"
@@ -268,7 +312,7 @@ do
             echo "=> Cluster Zone: $PARENTZONE"
             echo "=> Cert Path: $PKIPATH"
 
-###############
+
             log "Hole Master-Zertifikat..."
             icinga2 pki save-cert \
               --trustedcert "$PKIPATH/trusted-parent.crt" \
@@ -317,13 +361,15 @@ do
 
             icinga2 daemon -C
             log "config validierung"
-       
+
+            #restart Service
             log "neustart icinga2.service"
+            #rc-service
             if [ "$ID" = "alpine" ]; then
                 log "Verwende OpenRC für $ID"
                 rc-update add icinga2 default
                 rc-service icinga2 restart
-            
+            #systemd
             elif [ "$ID" = "ubuntu" ] || [ "$ID" = "debian" ] || [ "$ID" = "fedora" ] || [ "$ID" = "rhel" ]; then
                 # Systemd (Ubuntu / Debian / Fedora / RHEL)
                 log "Verwende Systemd für $ID"

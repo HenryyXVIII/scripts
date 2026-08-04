@@ -26,7 +26,7 @@ Verwendung:
 
 Optionen:
   -H, --parenthost IP     IP-Adresse des Parent-Hosts (Satelit)
-  -p, --port PORT         Port des Parent-Hosts (Satelit)
+  -p, --port PORT         Port des Parent-Hosts (Satelit) default 5665
   -pcn, --parentcn NAME   DNS Name des Parent-Host (Satelit)
   -z, --zone ZONE         Parent-Zone (Zone des Parents)
   -l, --localzone NAME    Lokale Zone 

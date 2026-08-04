@@ -18,6 +18,7 @@ log() {
 ########
 # HELP #
 ########
+
 show_help() {
 cat <<EOF
 Verwendung:
@@ -102,7 +103,7 @@ while [[ $# -gt 0 ]]; do
          shift 2
          ;;
        -h|--help)
-         schow_help
+         show_help
          exit 0
          ;;
        *)

@@ -5,6 +5,7 @@
 
 
 set -Eeuo pipefail
+set -o nounset
 #Abbruch Wenn Fehler
 
 RETURN=""

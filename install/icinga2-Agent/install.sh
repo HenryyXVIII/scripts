@@ -7,6 +7,17 @@
 set -Eeuo pipefail
 #Abbruch Wenn Fehler
 
+RETURN=""
+DATE=$(date '+%F_%H-%M-%S')
+LOGFILE="/var/log/icinga2-install-${DATE}.log"
+#LogDatei Pfad und Name mit Zeitstempel
+AGENTCN=$(hostname -f 2>/dev/null || cat /etc/hostname 2>/dev/null || hostname)
+PARENTCN=satelite.locales.lab
+PARENTIP="192.168.69.42"
+PARENTPORT="5665"
+PKIPATH="/etc/icinga2/pki"
+
+
 while [[ $# -gt 0 ]]; do
    case "$1" in
       -H|--parenthost)
@@ -88,9 +99,7 @@ fi
 # LOG-FILE #
 ############
 
-DATE=$(date '+%F_%H-%M-%S')
-LOGFILE="/var/log/icinga2-install-${DATE}.log"
-#LogDatei Pfad und Name mit Zeitstempel
+
 
 
 log() {
@@ -291,13 +300,6 @@ do
         
             #konfiguration
             log "konfiguration automatisch"
-            log "lese System Variablen"
-            AGENTCN=$(hostname -f 2>/dev/null || cat /etc/hostname 2>/dev/null || hostname)
-            PARENTCN=satelite.locales.lab
-            PARENTIP="192.168.69.42"
-            PARENTPORT="5665"
-            PKIPATH="/etc/icinga2/pki"
-
             log "lese Script Variablen"
             
 

@@ -8,6 +8,17 @@ set -Eeuo pipefail
 set -o nounset
 #Abbruch Wenn Fehler
 
+############
+# LOG-FILE #
+############
+log() {
+    echo "=> [$(date '+%F %T')] $*" | tee -a "$LOGFILE"
+}
+
+########
+# VARS #
+########
+
 RETURN=""
 DATE=$(date '+%F_%H-%M-%S')
 LOGFILE="/var/log/icinga2-install-${DATE}.log"
@@ -29,6 +40,9 @@ if [ -n "$PARENTCN" ] && [ -z "$PARENTZONE" ]; then
    log "Parent Zone set to CNAME of PARENT"
 fi
 
+###############
+# Script Vars #
+###############
 
 while [[ $# -gt 0 ]]; do
    case "$1" in
@@ -66,7 +80,9 @@ while [[ $# -gt 0 ]]; do
          ;;
          esac
 done
-
+########
+# HELP #
+########
 show_help() {
 cat <<EOF
 Verwendung:
@@ -106,18 +122,6 @@ if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
    exit 1
 fi
-
-############
-# LOG-FILE #
-############
-
-
-
-
-log() {
-    echo "=> [$(date '+%F %T')] $*" | tee -a "$LOGFILE"
-}
-#log Funktion
 
 
 ###############

@@ -21,10 +21,12 @@ PKIPATH="/etc/icinga2/pki"
 
 if [ -n "$PARENTIP" ] && [ -z "$RETURN" ]; then
    RETURN='y'
+   log "Autoconfig enabled"
 fi
 
 if [ -n "$PARENTCN" ] && [ -z "$PARENTZONE" ]; then
    PARENTZONE=$PARENTCN
+   log "Parent Zone set to CNAME of PARENT"
 fi
 
 

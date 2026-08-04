@@ -302,7 +302,7 @@ log "installation done, choose how to proceed"
 
 while true
 do
-    
+    log "$RETURN"
     if [ -z "${RETURN:-}" ]; then
         log "Variable Return nicht gesetzt"
         read -p " - experimental - Do you want configure Agent (Yes,Wizard,No)? (Y/w/n) " RETURN < /dev/tty

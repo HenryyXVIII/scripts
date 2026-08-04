@@ -16,6 +16,38 @@ log() {
 }
 
 ########
+# HELP #
+########
+show_help() {
+cat <<EOF
+Verwendung:
+  $(basename "$0") [OPTIONEN]
+
+Optionen:
+  -H, --parenthost IP     IP-Adresse des Parent-Hosts (Satelit)
+  -p, --port PORT         Port des Parent-Hosts (Satelit)
+  -pcn, --parentcn NAME   DNS Name des Parent-Host (Satelit)
+  -z, --zone ZONE         Parent-Zone (Zone des Parents)
+  -l, --localzone NAME    Lokale Zone 
+  -r, --return y|w|n      y=Autoconfig w=node Wizard n=nein
+
+  => IF PARENT-HOST IP (-H) IS SET AUTOCONFIGURE WILL BE STARTET AUTOMATIC <=
+  set -r to n to avoid it
+
+  -h, --help              Diese Hilfe anzeigen
+
+Beispiel:
+  $(basename "$0") \
+    -H 192.168.1.10 \
+    -p 5665 \
+    -pcn master \
+    -z dmz \
+    -l web01 \
+    -r y
+EOF
+}
+
+########
 # VARS #
 ########
 
@@ -80,37 +112,7 @@ while [[ $# -gt 0 ]]; do
          ;;
          esac
 done
-########
-# HELP #
-########
-show_help() {
-cat <<EOF
-Verwendung:
-  $(basename "$0") [OPTIONEN]
 
-Optionen:
-  -H, --parenthost IP     IP-Adresse des Parent-Hosts (Satelit)
-  -p, --port PORT         Port des Parent-Hosts (Satelit)
-  -pcn, --parentcn NAME   DNS Name des Parent-Host (Satelit)
-  -z, --zone ZONE         Parent-Zone (Zone des Parents)
-  -l, --localzone NAME    Lokale Zone 
-  -r, --return y|w|n      y=Autoconfig w=node Wizard n=nein
-
-  => IF PARENT-HOST IP (-H) IS SET AUTOCONFIGURE WILL BE STARTET AUTOMATIC <=
-  set -r to n to avoid it
-
-  -h, --help              Diese Hilfe anzeigen
-
-Beispiel:
-  $(basename "$0") \
-    -H 192.168.1.10 \
-    -p 5665 \
-    -pcn master \
-    -z dmz \
-    -l web01 \
-    -r y
-EOF
-}
 
 # sudo? #
 #sudo -n true

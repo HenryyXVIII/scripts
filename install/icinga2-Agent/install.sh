@@ -61,6 +61,7 @@ PARENTIP="192.168.69.42"
 PARENTZONE=""
 PARENTPORT="5665"
 PKIPATH="/etc/icinga2/pki"
+CERTPATH="/var/lib/icinga2/certs"
 
 if [ -n "$PARENTIP" ] && [ -z "$RETURN" ]; then
    RETURN='y'
@@ -307,20 +308,25 @@ do
             echo "=> Parent Port: $PARENTPORT"
             echo "=> Cluster Zone: $PARENTZONE"
             echo "=> Cert Path: $PKIPATH"
+            echo "=> Cert Path: $CERTPATH"
 
 
             log "Hole Master-Zertifikat..."
+            #icinga2 pki save-cert \
+            #  --trustedcert "$PKIPATH/trusted-parent.crt" \
+            #  --host "$PARENTIP" \
+            #  --port "$PARENTPORT"
             icinga2 pki save-cert \
-              --trustedcert "$PKIPATH/trusted-parent.crt" \
+              --trustedcert "$CERTPATH/ca.crt" \
               --host "$PARENTIP" \
-              --port "$PARENTPORT"
+              --port "$PARENTPORT"            
             
 
             log "Generiere lokalen Key und CSR..."
             icinga2 pki new-cert \
               --cn "$AGENTCN" \
-              --key "$PKIPATH/$AGENTCN.key" \
-              --csr "$PKIPATH/$AGENTCN.csr"
+              --key "$CERTPATH/$AGENTCN.key" \
+              --csr "$CERTPATH/$AGENTCN.csr"
             
 
             log "Sende PKI-Request an Master..."
@@ -347,7 +353,7 @@ do
               --zone "$AGENTCN" \
               --parent_zone "$PARENTZONE" \
               --parent_host "$PARENTCN" \
-              --trustedcert "$PKIPATH/trusted-parent.crt" \
+              --trustedcert "$CERTPATH/ca.crt" \
               --accept-commands \
               --accept-config \
               --disable-confd \
